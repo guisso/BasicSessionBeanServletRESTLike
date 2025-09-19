@@ -54,6 +54,16 @@ public class TaskService
     }
 
     @Override
+    public void update(@Valid Task task) {
+        try {
+            entityManager.merge(task);
+
+        } catch (Exception ex) {
+            throw new IllegalArgumentException(ex.getMessage());
+        }
+    }
+
+    @Override
     public Task findById(Long id) {
         return entityManager.find(Task.class, id);
     }
