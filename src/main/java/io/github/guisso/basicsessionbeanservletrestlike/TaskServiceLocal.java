@@ -42,4 +42,6 @@ public interface TaskServiceLocal {
 
     Task findById(Long id);
 
+    void delete(Long id);
+
 }

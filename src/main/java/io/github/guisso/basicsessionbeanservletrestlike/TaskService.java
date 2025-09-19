@@ -68,4 +68,28 @@ public class TaskService
         return entityManager.find(Task.class, id);
     }
 
+    @Override
+    public void delete(Long id) {
+        // #1
+//        Task task = entityManager.find(Task.class, id);
+//        entityManager.remove(task);
+
+        // #2
+//        entityManager.remove(entityManager.merge(new Task(id)));
+
+        // #3
+//        int affected = entityManager.createQuery("DELETE FROM Task t WHERE t.id = :id")
+//                .setParameter("id", id)
+//                .executeUpdate();
+
+        // $4
+        int affected = entityManager.createNamedQuery("Task.removeById")
+                .setParameter("id", id)
+                .executeUpdate();
+
+        if (affected == 0) {
+            throw new IllegalArgumentException("ID not found");
+        }
+    }
+
 }
