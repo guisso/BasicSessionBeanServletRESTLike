@@ -23,12 +23,15 @@
  */
 package io.github.guisso.basicsessionbeanservletrestlike;
 
+import jakarta.ejb.EJB;
+import jakarta.inject.Inject;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Validator;
 
 /**
  * A simple servlet testing HTTP verbs with persistence operations
@@ -39,6 +42,12 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "TaskServlet", urlPatterns = {"/tasks"})
 public class TaskServlet extends HttpServlet {
+
+    @Inject
+    Validator validator;
+
+    @EJB
+    TaskServiceLocal taskService;
 
     /**
      * Handles the HTTP <code>POST</code> method.
