@@ -24,6 +24,8 @@
 package io.github.guisso.basicsessionbeanservletrestlike;
 
 import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 /**
  * CRUD operations
@@ -36,4 +38,6 @@ import jakarta.ejb.Stateless;
 public class TaskService
         implements TaskServiceLocal {
 
+    @PersistenceContext
+    EntityManager entityManager;
 }
