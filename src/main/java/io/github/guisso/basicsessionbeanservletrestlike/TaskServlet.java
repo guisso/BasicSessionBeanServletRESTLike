@@ -33,8 +33,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import java.io.PrintWriter;
+import java.util.Set;
 
 /**
  * A simple servlet testing HTTP verbs with persistence operations
@@ -66,7 +69,23 @@ public class TaskServlet extends HttpServlet {
         // Simple test
 //        response.setContentType("text/plain");
 //        response.getWriter().write("POST OK");
+//
+        String description = request.getParameter("description");
+        Task task = new Task(description);
 
+        try {
+            // Validation of the entity by yours annotations
+            Set<ConstraintViolation<Task>> violations = validator.validate(task);
+            if (!violations.isEmpty()) {
+                throw new ConstraintViolationException(violations);
+            }
+
+            taskService.save(task);
+            generateJsonOutput(response, 201, task);
+
+        } catch (ConstraintViolationException cvex) {
+            generateJsonError(response, 422, cvex.getMessage());
+        }
     }
 
     /**
