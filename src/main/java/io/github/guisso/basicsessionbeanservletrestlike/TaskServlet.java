@@ -160,8 +160,18 @@ public class TaskServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Simple test
-        response.setContentType("text/plain");
-        response.getWriter().write("DELETE OK");
+//        response.setContentType("text/plain");
+//        response.getWriter().write("DELETE OK");
+//
+        Long id = Long.valueOf(request.getParameter("id"));
+
+        try {
+            taskService.delete(id);
+            generateJsonOutput(response, 204, null);
+
+        } catch (IOException e) {
+            generateJsonError(response, 404, e.getMessage());
+        }
     }
 
     /**
