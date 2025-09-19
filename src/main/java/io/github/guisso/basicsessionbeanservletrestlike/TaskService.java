@@ -53,4 +53,9 @@ public class TaskService
         }
     }
 
+    @Override
+    public Task findById(Long id) {
+        return entityManager.find(Task.class, id);
+    }
+
 }

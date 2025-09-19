@@ -38,4 +38,6 @@ public interface TaskServiceLocal {
 
     void save(@Valid Task task);
 
+    Task findById(Long id);
+
 }
