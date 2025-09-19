@@ -25,6 +25,8 @@ package io.github.guisso.basicsessionbeanservletrestlike;
 
 import jakarta.ejb.EJB;
 import jakarta.inject.Inject;
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -32,6 +34,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Validator;
+import java.io.PrintWriter;
 
 /**
  * A simple servlet testing HTTP verbs with persistence operations
@@ -61,8 +64,9 @@ public class TaskServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Simple test
-        response.setContentType("text/plain");
-        response.getWriter().write("POST OK");
+//        response.setContentType("text/plain");
+//        response.getWriter().write("POST OK");
+
     }
 
     /**
@@ -113,4 +117,56 @@ public class TaskServlet extends HttpServlet {
         response.getWriter().write("DELETE OK");
     }
 
+    /**
+     * Generate a default JSON response
+     *
+     * @param response Servlet response
+     * @param errorCode HTTP code
+     * @param task Task to be represented
+     * @throws IOException If an I/O error occurs
+     */
+    private void generateJsonOutput(
+            HttpServletResponse response,
+            int code, Task task)
+            throws IOException {
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        try (PrintWriter out = response.getWriter()) {
+            Jsonb jsonb = JsonbBuilder.create();
+
+            if (task != null) {
+                jsonb.toJson(task, out);
+            }
+
+        } catch (IOException ioex) {
+            generateJsonError(response, code, ioex.getMessage());
+        }
+    }
+
+    /**
+     * Generate a default JSON Error response
+     *
+     * @param response Servlet response
+     * @param errorCode Error code
+     * @param errorMessage Error message
+     * @throws IOException If an I/O error occurs
+     */
+    private void generateJsonError(
+            HttpServletResponse response,
+            int errorCode, String errorMessage)
+            throws IOException {
+
+        response.setStatus(errorCode);
+        response.setContentType("application/json; charset=UTF-8");
+
+        String jsonError = String.format("""
+            {
+              "code": %d,
+              "error": "%s"
+            }
+            """, errorCode, errorMessage);
+        response.getWriter().write(jsonError);
+    }
 }
