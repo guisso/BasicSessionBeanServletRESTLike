@@ -9,6 +9,6 @@ Review the commits. They show the logical sequence to building the complete appl
 - Perform tests all the time, always observing the results reflected in the database
 
 ## Postman Tests
-Pay attention to variable {{baseURL}}, params, headers, and body.
+Pay attention to the variable {{baseURL}}, params, headers, and body.
 
 [Basic tests](https://www.postman.com/lguisso-6942859/workspace/personal-workspace/collection/47767724-d3073648-16b8-4170-a3dd-f03ed7c3c16d?action=share&creator=47767724)
