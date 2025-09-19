@@ -130,14 +130,21 @@ public class TaskServlet extends HttpServlet {
 //        response.getWriter().write("PUT OK");
 //
         Long id = Long.valueOf(request.getParameter("id"));
-        Task task = taskService.findById(id);
+        String description = request.getParameter("description");
+        Task task = new Task(id, description);
 
-        if (task == null) {
-            generateJsonError(response, 404, "ID not found");
+        try {
+            // Object validation
+            Set<ConstraintViolation<Task>> violations = validator.validate(task);
+            if (!violations.isEmpty()) {
+                throw new ConstraintViolationException(violations);
+            }
 
-        } else {
+            taskService.update(task);
             generateJsonOutput(response, 200, task);
 
+        } catch (ConstraintViolationException cvex) {
+            generateJsonError(response, 422, cvex.getMessage());
         }
     }
 
