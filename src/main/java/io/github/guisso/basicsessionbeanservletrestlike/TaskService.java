@@ -26,6 +26,7 @@ package io.github.guisso.basicsessionbeanservletrestlike;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.validation.Valid;
 
 /**
  * CRUD operations
@@ -40,4 +41,16 @@ public class TaskService
 
     @PersistenceContext
     EntityManager entityManager;
+
+    @Override
+    public void save(@Valid Task task)
+            throws IllegalArgumentException {
+        try {
+            entityManager.persist(task);
+
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
+
 }

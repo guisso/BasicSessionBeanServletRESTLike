@@ -24,12 +24,18 @@
 package io.github.guisso.basicsessionbeanservletrestlike;
 
 import jakarta.ejb.Local;
+import jakarta.validation.Valid;
 
 /**
+ * Required methods for CRUD operations
  *
  * @author Luis Guisso &lt;luis dot guisso at ifnmg dot edu dot br&gt;
+ * @version 0.1
+ * @since 0.1, Sep 19, 2025
  */
 @Local
 public interface TaskServiceLocal {
-    
+
+    void save(@Valid Task task);
+
 }
