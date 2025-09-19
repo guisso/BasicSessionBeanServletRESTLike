@@ -100,8 +100,18 @@ public class TaskServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Simple test
-        response.setContentType("text/plain");
-        response.getWriter().write("GET OK");
+//        response.setContentType("text/plain");
+//        response.getWriter().write("GET OK");
+//        
+        Long id = Long.valueOf(request.getParameter("id"));
+        Task task = taskService.findById(id);
+
+        if (task == null) {
+            generateJsonError(response, 404, "ID not found");
+
+        } else {
+            generateJsonOutput(response, 200, task);
+        }
     }
 
     /**
@@ -116,8 +126,19 @@ public class TaskServlet extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Simple test
-        response.setContentType("text/plain");
-        response.getWriter().write("PUT OK");
+//        response.setContentType("text/plain");
+//        response.getWriter().write("PUT OK");
+//
+        Long id = Long.valueOf(request.getParameter("id"));
+        Task task = taskService.findById(id);
+
+        if (task == null) {
+            generateJsonError(response, 404, "ID not found");
+
+        } else {
+            generateJsonOutput(response, 200, task);
+
+        }
     }
 
     /**
