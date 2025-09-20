@@ -216,7 +216,8 @@ public class TaskServlet extends HttpServlet {
             throws IOException {
 
         response.setStatus(errorCode);
-        response.setContentType("application/json; charset=UTF-8");
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
 
         String jsonError = String.format("""
             {
